@@ -40,8 +40,6 @@ class ROOM:
         self.room_is_full = False
         self.total_finished = 0
         ###############################################
-        # self.total_len_corona_queue = 0
-        # self.total_len_normal_queue = 0
         self.total_time_in_sys_corona_pats = 0
         self.total_time_in_sys_normal_pats = 0
 
@@ -135,7 +133,7 @@ class Reception_class:
                 self.reception_busy = False
                 self.Queue_to_room.append(self.patient_in_reception)
 
-            # if  pat is tired -- > left qu
+            # if  patient is tired -- > left queue
             time2 = time.time()
 
             while True:
@@ -159,7 +157,7 @@ class Reception_class:
             time3 = time.time()
             self.time_tired += (time3 - time2)
 
-            # next pat come to reception
+            # next patient come to reception
 
             if len(self.corona_patient_queue) - self.corona_pat_q_index and self.corona_patient_queue[
                 self.corona_pat_q_index].arrival_time <= clock:
@@ -185,16 +183,6 @@ class Reception_class:
             self.time_add += time4 - time3
 
             len_reception_normal=0.9*clock/7 -self.normal_pat_q_index
-            #print("normal ", clock,0.9*clock/7, self.normal_pat_q_index)
-
-            #for i in range(len(self.normal_patient_queue)):
-             #   if self.normal_patient_queue[i].arrival_time==clock:
-              #      print(clock,i,)
-               #     break
-
-            #if 0.1*clock/8- self.corona_pat_q_index>0:
-             #   len_reception_corona=0.1*clock/7 - self.corona_pat_q_index
-              #  print("corona ",len_reception_corona)
 
 
         return number_of_patients, left_reception_corona_pats, left_reception_normal_pats
@@ -289,7 +277,7 @@ class hospital:
 
             time2 = time.time()
             self.time_reception_took += time2 - time1
-            # send pat to shortest q
+            # send patient to the shortest queue
 
             while len(self.reception.Queue_to_room):
                 qu_len = [
@@ -308,6 +296,7 @@ class hospital:
 
             time3 = time.time()
             self.time_calculate_min_len += time3 - time2
+            
             # check bored time in rooms queue
             for i in range(M):
                 time3 = time.time()
@@ -325,6 +314,7 @@ class hospital:
 
                 time4 = time.time()
                 self.time_tired_room_took += time4 - time3
+                
                 # check up each room :
 
                 temp_number_of_pat_finished_check_up = self.Rooms[i].check_up(clock)
@@ -345,8 +335,6 @@ class hospital:
             time5 = time.time()
 
             total_len_reception_queue+=(len_reception_queue_corona+len_reception_queue_normal)
-            #print(len_queue_corona_rooms+len_reception_queue_corona)
-            #print(len_queue_normal_rooms+len_reception_queue_normal,"\n")
             dict_people_in_queue_corona[clock] = len_queue_corona_rooms+len_reception_queue_corona
             dict_people_in_queue_normal[clock] = len_queue_normal_rooms+len_reception_queue_normal
             dict_people_in_queue[clock] = dict_people_in_queue_normal[clock] + dict_people_in_queue_corona[clock]
